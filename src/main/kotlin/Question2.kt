@@ -1,4 +1,3 @@
-import algo.Ship
 import algo.getDetectWidthAt
 import map.BasicMap
 import utils.Vector2
@@ -11,13 +10,13 @@ fun main() {
         slopeDir = Vector2.WEST,
         slopeAngle = 1.5.degree
     )
-    val ship = Ship(map = map, detectAngle = 120.degree)
+    val  detectAngle = 120.degree
     for(degree in 0..315 step 45) {
         var mile = 0.0
         val mileStep = 0.3
         val dir = Vector2.fromAngle(degree.degree)
         while (mile <= 2.1) {
-            val width = ship.getDetectWidthAt(dir * mile.nm, dir)
+            val width = map.getDetectWidthAt(dir * mile.nm, dir, detectAngle)
             print(String.format("%5.2f ", width))
             mile += mileStep
         }

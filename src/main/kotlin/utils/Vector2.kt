@@ -16,6 +16,7 @@ data class Vector2(
         val east = Vector2(0.0, 1.0)
     }
 
+    val length get() = kotlin.math.sqrt(x * x + y * y)
     val angle get() = atan2(y, x)
     fun rotate(angle: Double) = fromAngle(this.angle + angle)
     operator fun unaryMinus() = Vector2(-x, -y)

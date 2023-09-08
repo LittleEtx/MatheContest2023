@@ -7,7 +7,7 @@ import utils.hm
 
 fun main() {
     val map = BasicMap(
-        originHeight = 120.0,
+        originDeep = 120.0,
         slopeDir = Vector2.south,
         slopeAngle = 1.5.degree
     )
@@ -16,8 +16,9 @@ fun main() {
         var mile = 0.0
         val mileStep = 0.3
         val dir = Vector2.fromAngle(degree.degree)
+        ship.direction = dir
         while (mile <= 2.1) {
-            val width = ship.detectWidthAt(dir * mile.hm, dir)
+            val width = ship.detectWidthAt(dir * mile.hm)
             print(String.format("%5.2f ", width))
             mile += mileStep
         }

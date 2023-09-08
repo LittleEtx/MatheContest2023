@@ -5,10 +5,10 @@ import utils.degree
 import kotlin.math.tan
 
 const val THRESHOLD = 1e-8
-private fun Ship.findSolution(at: Vector2, dir: Vector2) : Double {
+private fun Ship.findSolution(position: Vector2, dir: Vector2) : Double {
     object {
-        val Double.x get() = at.x + this * dir.x
-        val Double.y get() = at.y + this * dir.y
+        val Double.x get() = position.x + this * dir.x
+        val Double.y get() = position.y + this * dir.y
         val Double.detectDeep get() = this / tan(detectAngle / 2)
     }.apply {
         var l = 0.0
@@ -23,9 +23,9 @@ private fun Ship.findSolution(at: Vector2, dir: Vector2) : Double {
     }
 }
 
-fun Ship.detectWidthAt(x: Double, y: Double, shipDir: Vector2) : Double {
-    return findSolution(Vector2(x, y), shipDir.rotate(90.degree)) +
-            findSolution(Vector2(x, y), shipDir.rotate((-90).degree))
+fun Ship.detectWidthAt(x: Double, y: Double) : Double {
+    return findSolution(Vector2(x, y), direction.rotate(90.degree)) +
+            findSolution(Vector2(x, y), direction.rotate((-90).degree))
 }
 
-fun Ship.detectWidthAt(at: Vector2, shipDir: Vector2) = detectWidthAt(at.x, at.y, shipDir)
+fun Ship.detectWidthAt(position: Vector2) = detectWidthAt(position.x, position.y)

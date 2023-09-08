@@ -9,14 +9,14 @@ private fun Ship.findSolution(at: Vector2, dir: Vector2) : Double {
     object {
         val Double.x get() = at.x + this * dir.x
         val Double.y get() = at.y + this * dir.y
-        val Double.detectHeight get() = this / tan(detectAngle / 2)
+        val Double.detectDeep get() = this / tan(detectAngle / 2)
     }.apply {
         var l = 0.0
         var r = 1.0
-        while (r.detectHeight < map.heightAt(r.x, r.y)) r *= 2
+        while (r.detectDeep < map.deepAt(r.x, r.y)) r *= 2
         while (r - l > THRESHOLD) {
             val mid = (l + r) / 2
-            if (mid.detectHeight < map.heightAt(mid.x, mid.y)) l = mid
+            if (mid.detectDeep < map.deepAt(mid.x, mid.y)) l = mid
             else r = mid
         }
         return l

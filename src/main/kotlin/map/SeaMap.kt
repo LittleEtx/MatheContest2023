@@ -3,6 +3,6 @@ package map
 import utils.Vector2
 
 interface SeaMap {
-    fun heightAt(at: Vector2) : Double
-    fun heightAt(x: Double, y: Double) : Double = heightAt(Vector2(x, y))
+    fun deepAt(position: Vector2) : Double
+    fun deepAt(x: Double, y: Double) : Double = deepAt(Vector2(x, y))
 }

@@ -13,8 +13,8 @@ fun main() {
     val ship = Ship(map = map, detectAngle = 120.degree)
     val dir = Vector2.west
     for (dis in -800..800 step 200) {
-        val height = String.format("%.2f", map.heightAt(dis.toDouble(), 0.0))
+        val deep = String.format("%.2f", map.deepAt(dis.toDouble(), 0.0))
         val width = String.format("%.2f", ship.detectWidthAt(dis.toDouble(), 0.0, dir))
-        println("$height: $width")
+        println("$deep: $width")
     }
 }

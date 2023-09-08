@@ -8,8 +8,8 @@ class BasicMap(
     private val slopeDir: Vector2,
     private val slopeAngle: Double,
 ): SeaMap {
-    override fun heightAt(at: Vector2): Double {
-        val mapping = at * slopeDir
+    override fun deepAt(position: Vector2): Double {
+        val mapping = position * slopeDir
         return originHeight - mapping * tan(slopeAngle)
     }
 }

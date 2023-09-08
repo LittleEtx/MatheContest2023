@@ -1,7 +1,9 @@
 package utils
 
+import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
+import kotlin.math.sqrt
 
 data class LineSeg(
     val start: Vector2,
@@ -44,4 +46,11 @@ data class Line(
 
     fun xAt(y: Double): Double = (-c - b * y) / a
     fun yAt(x: Double): Double = (-c - a * x) / b
+}
+
+fun Vector2.distanceTo(line: Line): Double {
+    val a = line.a
+    val b = line.b
+    val c = line.c
+    return abs(a * x + b * y + c) / sqrt(a * a + b * b)
 }

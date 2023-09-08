@@ -8,7 +8,7 @@ import utils.nm
 fun main() {
     val map = BasicMap(
         originDeep = 120.0,
-        slopeDir = Vector2.SOUTH,
+        slopeDir = Vector2.WEST,
         slopeAngle = 1.5.degree
     )
     val ship = Ship(map = map, detectAngle = 120.degree)

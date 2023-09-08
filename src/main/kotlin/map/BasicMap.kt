@@ -3,6 +3,9 @@ package map
 import utils.Vector2
 import kotlin.math.tan
 
+/**
+ * slopeDir is from deep to shallow
+ */
 class BasicMap(
     private val originDeep: Double,
     private val slopeDir: Vector2,

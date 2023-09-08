@@ -11,10 +11,10 @@ data class Vector2(
 ) {
     companion object {
         fun fromAngle(angle: Double) = Vector2(cos(angle), sin(angle))
-        val NORTH = Vector2(1.0, 0.0)
-        val WEST = Vector2(0.0, -1.0)
-        val SOUTH = Vector2(-1.0, 0.0)
-        val EAST = Vector2(0.0, 1.0)
+        val NORTH = Vector2(0.0, 1.0)
+        val WEST = Vector2(-1.0, 0.0)
+        val SOUTH = Vector2(0.0, -1.0)
+        val EAST = Vector2(1.0, 0.0)
     }
 
     val length get() = sqrt(x * x + y * y)

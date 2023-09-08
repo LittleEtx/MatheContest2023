@@ -1,18 +1,14 @@
 package map
 
+import assertEquals
 import org.junit.jupiter.api.Test
 import utils.Vector2
 import utils.degree
-import kotlin.math.absoluteValue
 import kotlin.math.atan
 import kotlin.math.cos
 import kotlin.math.sin
 
 class BasicMapTest {
-
-    private fun assertEquals(expected: Double, actual: Double) {
-        assert((expected - actual).absoluteValue < 1e-6) { "expected: $expected, actual: $actual" }
-    }
 
     @Test
     fun `slope with angle 0`() {

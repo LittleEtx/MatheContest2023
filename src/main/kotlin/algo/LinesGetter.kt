@@ -4,14 +4,14 @@ import map.SeaMap
 import utils.*
 import kotlin.math.tan
 
-private const val DISTANCE_STEP = 1.0
+private const val DISTANCE_STEP = 0.1
 private const val THRESHOLD = 1e-6
 
 fun SeaMap.getExpectedDistanceFrom(
     position: Vector2,
     dir: Vector2,
     detectAngle: Double,
-    overLeapRate: Double,
+    overlapRate: Double,
 ): Double {
     val baseWidth = getHalfDetectWidth(position, dir, detectAngle)
     val baseWidthRemain = getHalfDetectWidth(position, dir.reverse(), detectAngle)
@@ -35,7 +35,8 @@ fun SeaMap.getExpectedDistanceFrom(
             return l
         }
     }.apply {
-        return findDistanceAtRate(overLeapRate)
+//       return findDistanceAtRate(overLeapRate)
+        return (1 - overlapRate) * (baseWidth + baseWidthRemain)
     }
 }
 
@@ -76,30 +77,39 @@ fun SearchArea.getLines(
         val Double.pos get() = curPoint + shipDir.reverse() * this
         val Double.topDetectPt get() = getDetectedPoint(pos, shiftDir, detectAngle)
         val Double.botDetectPt get() = getDetectedPoint(pos, shiftDir.reverse(), detectAngle)
+
+        fun Double.touchArea(): Boolean {
+            val top = topDetectPt
+            val bot = botDetectPt
+            return top.isInArea() || bot.isInArea() || LineSeg(top, bot).isIntersect()
+        }
+        fun Double.notTouchArea() = !touchArea()
+
     }.apply {
         val lines = mutableListOf<LineSeg>()
         var l = 0.0
         var r = 0.0
         while (true) {
             // extend / shirk search area
-            while (l.topDetectPt.isNotInArea() && l.botDetectPt.isNotInArea()) l += DISTANCE_STEP
-            while (l.topDetectPt.isInArea() && l.botDetectPt.isInArea()) l -= DISTANCE_STEP
+            while (l.notTouchArea()) l += DISTANCE_STEP
+            while (l.touchArea()) l -= DISTANCE_STEP
 
-            while (r.topDetectPt.isNotInArea() && r.botDetectPt.isNotInArea()) r -= DISTANCE_STEP
-            while (r.topDetectPt.isInArea() && r.botDetectPt.isInArea()) r += DISTANCE_STEP
+            while (r.notTouchArea()) r -= DISTANCE_STEP
+            while (r.touchArea()) r += DISTANCE_STEP
 
-            var fullFillTop = true
+            lines += LineSeg(l.pos, r.pos)
+            val finished = (l..r step DISTANCE_STEP).all { it.topDetectPt.isNotInArea() }
+            if (finished) break    // fill the area
+
+            // get next line
             var range: ClosedRange<Double> = Double.NEGATIVE_INFINITY..Double.POSITIVE_INFINITY
             (l..r step DISTANCE_STEP)
-                .filter { it.topDetectPt.isInArea() }
+                .filter { it.topDetectPt.isInArea() } // here we assume that the area is convex
                 .forEach { dis ->
-                    fullFillTop = false
                     range = range.intersect(getExpectedDistanceFrom(dis.pos))
                     if (range.isEmpty()) return null // invalid
                 }
-            lines += LineSeg(l.pos, r.pos)
             curPoint += shiftDir * range.end // shift max possible
-            if (fullFillTop) break
         }
         return lines
     }

@@ -13,9 +13,9 @@ val map = BasicMap(
 )
 val detectAngle = 120.degree
 val searchArea = RectArea(
-    beginX = (-2).nm,
+    startX = (-2).nm,
     endX = 2.nm,
-    beginY = (-1).nm,
+    startY = (-1).nm,
     endY = 1.nm,
     map = map,
 )

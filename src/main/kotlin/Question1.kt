@@ -12,8 +12,8 @@ fun main() {
     val detectAngle = 120.degree
     val dir = Vector2.WEST
     for (dis in -800..800 step 200) {
-        val deep = String.format("%.2f", map.deepAt(dis.toDouble(), 0.0))
-        val width = String.format("%.2f", map.getDetectWidthAt(dis.toDouble(), 0.0, dir, detectAngle))
+        val deep = String.format("%.2f", map.deepAt(0.0, dis.toDouble()))
+        val width = String.format("%.2f", map.getDetectWidthAt(0.0, dis.toDouble(), dir, detectAngle))
         println("$deep: $width")
     }
 }

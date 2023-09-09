@@ -5,7 +5,7 @@ import utils.Vector2
 import utils.degree
 import kotlin.math.tan
 
-private const val THRESHOLD = 1e-6
+private const val THRESHOLD = 1e-8
 fun SeaMap.getHalfDetectWidth(position: Vector2, dir: Vector2, detectAngle: Double) : Double {
     object {
         val Double.x get() = position.x + this * dir.x

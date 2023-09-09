@@ -1,10 +1,7 @@
 package algo
 
 import map.SeaMap
-import utils.Line
-import utils.LineSeg
-import utils.Vector2
-import utils.degree
+import utils.*
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.min
@@ -29,7 +26,7 @@ class RectArea(
     override val map: SeaMap,
 ) : SearchArea {
 
-    val boundaryLines = listOf(
+    private val boundaryLines = listOf(
         Line(Vector2(startX, startY), Vector2(endX, startY)),
         Line(Vector2(endX, startY), Vector2(endX, endY)),
         Line(Vector2(endX, endY), Vector2(startX, endY)),
@@ -53,12 +50,56 @@ class RectArea(
     }
 
     override fun LineSeg.isIntersect(): Boolean {
-        return boundaryLines
-            .map { it.intersect(line) }
-            .filter { it.x.isFinite() && it.y.isFinite() }
-            .any { min(start.x, end.x) <= it.x && it.x <= max(start.x, end.x) &&
-                    min(start.y, end.y) <= it.y && it.y <= max(start.y, end.y) }
-
+        return intersectWith(boundaryLines)
     }
+
+}
+
+private fun LineSeg.intersectWith(boundaryLines: List<Line>) = boundaryLines
+    .map { it.intersect(line) }
+    .filter { it.x.isFinite() && it.y.isFinite() }
+    .any {
+        min(start.x, end.x) <= it.x && it.x <= max(start.x, end.x) &&
+                min(start.y, end.y) <= it.y && it.y <= max(start.y, end.y)
+    }
+
+/**
+ * @param points should be in counter-clock-wise order
+ */
+class PolyArea(
+    private val points: List<Vector2>,
+    override val map: SeaMap,
+): SearchArea {
+    private val Int.next get() = (this + 1) % points.size
+    private val Int.prev get() = (this - 1 + points.size) % points.size
+    override fun Vector2.isInArea(): Boolean {
+        points.forEachIndexed { index, point ->
+            val nextPoint = points[index.next]
+            if ((nextPoint - point) cross (this - point) < 0) return false
+        }
+        return true
+    }
+
+    private val Double.angleInRange get() = this - floor(this / 360.degree) * 360.degree
+
+    private val ranges = points.mapIndexed { index, point ->
+        val fromAngle = ((points[index.prev] - point).angle - 90.degree).angleInRange
+        val toAngle = ((points[index.next] - point).angle + 90.degree).angleInRange
+        if (fromAngle < toAngle) listOf(fromAngle..toAngle)
+        else listOf(0.0.degree.. toAngle, fromAngle..360.degree)
+    }
+
+    override fun tangencyPoint(angle: Double): Vector2 {
+        val ang = angle.angleInRange
+        ranges.forEachIndexed { index, range ->
+            if(range.any { ang in it }) return points[index]
+        }
+        throw Error("cannot find any matching points for angle $angle")
+    }
+
+    private val boundaryLines = points.mapIndexed { index, point ->
+        Line(point, (points[index.next] - point).angle)
+    }
+    override fun LineSeg.isIntersect() = intersectWith(boundaryLines)
 }
 

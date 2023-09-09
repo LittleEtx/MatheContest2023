@@ -5,7 +5,7 @@ import utils.*
 import kotlin.math.tan
 
 private const val DISTANCE_STEP = 0.1
-private const val THRESHOLD = 1e-6
+private const val THRESHOLD = 1e-8
 
 fun SeaMap.getExpectedDistanceFrom(
     position: Vector2,
@@ -58,7 +58,7 @@ fun SeaMap.getExpectedDistanceFrom(
 fun SearchArea.getLines(
     detectAngle: Double,
     shipAngle: Double,
-    limit: ClosedRange<Double> = 0.1..0.2,
+    limit: ClosedRange<Double> = 0.1..0.3,
 ) : List<LineSeg>? {
     val shipDir = Vector2.fromAngle(shipAngle)
     val shiftAngle = shipAngle + 90.degree
@@ -74,7 +74,7 @@ fun SearchArea.getLines(
 
         fun getExpectedDistanceFrom(pos: Vector2) =
             map.getExpectedDistanceFrom(pos, shiftDir, detectAngle, limit)
-        val Double.pos get() = curPoint + shipDir.reverse() * this
+        val Double.pos get() = curPoint + shipDir * this
         val Double.topDetectPt get() = getDetectedPoint(pos, shiftDir, detectAngle)
         val Double.botDetectPt get() = getDetectedPoint(pos, shiftDir.reverse(), detectAngle)
 
@@ -87,8 +87,9 @@ fun SearchArea.getLines(
 
     }.apply {
         val lines = mutableListOf<LineSeg>()
-        var l = 0.0
-        var r = 0.0
+        // given init value to ensure touch area
+        var l = -1000.0
+        var r = 1000.0
         while (true) {
             // extend / shirk search area
             while (l.notTouchArea()) l += DISTANCE_STEP

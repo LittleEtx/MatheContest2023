@@ -31,3 +31,5 @@ data class Vector2(
     operator fun unaryMinus() = this.reverse()
     fun reverse(): Vector2 = this * (-1.0)
 }
+
+infix fun Vector2.cross(other: Vector2) = x * other.y - y * other.x

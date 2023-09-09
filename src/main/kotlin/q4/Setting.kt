@@ -47,11 +47,8 @@ val detectAngle = 120.degree
 //    map = map,
 //)
 
+
 val searchArea = PolyArea(
-    points = listOf(
-        Vector2(X_START_NM.nm, Y_START_NM.nm),
-        Vector2((X_LENGTH_IN_NM + X_START_NM).nm, (Y_LENGTH_IN_NM + Y_START_NM).nm),
-        Vector2(X_START_NM.nm, (Y_LENGTH_IN_NM + Y_START_NM).nm),
-    ),
+    points = polynomial,
     map = map,
 )

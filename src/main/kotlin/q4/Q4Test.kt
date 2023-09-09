@@ -5,7 +5,7 @@ import utils.degree
 import utils.toDegree
 
 fun main() {
-    val angle = 2.5.degree
+    val angle = 212.5.degree
     print("angle: ${angle.toDegree()}")
     val lines = searchArea.getLines(
         detectAngle = detectAngle,
@@ -15,7 +15,7 @@ fun main() {
     val totalLength = lines.sumOf { it.length }
     print(" find solution of length $totalLength")
     println()
-//    println("lines (size = ${lines.size}):")
-//    lines.forEach { println("from:(${it.start.x}, ${it.start.y}) to:(${it.end.x}, ${it.end.y})") }
-    lines.forEach { println("${it.start.x}") }
+    println("lines (size = ${lines.size}):")
+    lines.forEach { println("from:(${it.start.x}, ${it.start.y}) to:(${it.end.x}, ${it.end.y})") }
+
 }

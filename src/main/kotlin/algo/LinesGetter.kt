@@ -89,7 +89,7 @@ fun SearchArea.getLines(
         val lines = mutableListOf<LineSeg>()
         // given init value to ensure touch area
         var l = -1000.0
-        var r = 1000.0
+        var r = 0.0
         while (true) {
             // extend / shirk search area
             while (l.notTouchArea()) l += DISTANCE_STEP
@@ -99,17 +99,17 @@ fun SearchArea.getLines(
             while (r.touchArea()) r += DISTANCE_STEP
 
             lines += LineSeg(l.pos, r.pos)
-            val finished = (l..r step DISTANCE_STEP).all { it.topDetectPt.isNotInArea() }
-            if (finished) break    // fill the area
-
+            var finished = true
             // get next line
             var range: ClosedRange<Double> = Double.NEGATIVE_INFINITY..Double.POSITIVE_INFINITY
             (l..r step DISTANCE_STEP)
                 .filter { it.topDetectPt.isInArea() } // here we assume that the area is convex
                 .forEach { dis ->
+                    finished = false // has point at top
                     range = range.intersect(getExpectedDistanceFrom(dis.pos))
                     if (range.isEmpty()) return null // invalid
                 }
+            if (finished) break    // fill the area
             curPoint += shiftDir * range.end // shift max possible
         }
         return lines

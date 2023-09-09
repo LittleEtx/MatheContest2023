@@ -1,9 +1,6 @@
 package utils
 
-import kotlin.math.abs
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.sqrt
+import kotlin.math.*
 
 data class LineSeg(
     val start: Vector2,
@@ -17,6 +14,16 @@ data class LineSeg(
     val length = (end - start).length
     val line = Line(p1 = start, p2 = end)
 }
+
+infix fun LineSeg.intersectWith(seg: LineSeg): Boolean {
+        val pt = line.intersect(seg.line)
+        return pt.x.isFinite() && pt.y.isFinite() &&
+                min(seg.start.x, seg.end.y) <= pt.x && pt.x <= max(seg.start.x, seg.end.x) &&
+                min(seg.start.y, seg.end.y) <= pt.y && pt.y <= max(seg.start.y, seg.end.y) &&
+                min(start.x, end.x) <= pt.x && pt.x <= max(start.x, end.x) &&
+                min(start.y, end.y) <= pt.y && pt.y <= max(start.y, end.y)
+}
+
 
 data class Line(
     val a: Double,

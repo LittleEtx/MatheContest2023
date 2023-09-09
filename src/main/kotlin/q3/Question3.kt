@@ -2,9 +2,9 @@ package q3
 import algo.getLines
 import utils.*
 
-val ANGLE_STEP = 0.1.degree
-val FROM_ANGLE = 88.degree
-val TO_ANGLE = 92.degree
+val ANGLE_STEP = 2.5.degree
+val FROM_ANGLE = 0.degree
+val TO_ANGLE = 360.degree
 
 
 fun main() {
@@ -25,7 +25,6 @@ fun main() {
     }
 
     (FROM_ANGLE..TO_ANGLE step ANGLE_STEP).forEach { search(it) }
-    (FROM_ANGLE..TO_ANGLE step ANGLE_STEP).forEach { search(-it) }
     println()
     val best = results.minBy { it.length }
 

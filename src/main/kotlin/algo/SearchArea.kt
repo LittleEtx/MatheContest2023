@@ -27,10 +27,10 @@ class RectArea(
 ) : SearchArea {
 
     private val boundaryLines = listOf(
-        Line(Vector2(startX, startY), Vector2(endX, startY)),
-        Line(Vector2(endX, startY), Vector2(endX, endY)),
-        Line(Vector2(endX, endY), Vector2(startX, endY)),
-        Line(Vector2(startX, endY), Vector2(startX, startY)),
+        LineSeg(Vector2(startX, startY), Vector2(endX, startY)),
+        LineSeg(Vector2(endX, startY), Vector2(endX, endY)),
+        LineSeg(Vector2(endX, endY), Vector2(startX, endY)),
+        LineSeg(Vector2(startX, endY), Vector2(startX, startY)),
     )
 
     override fun Vector2.isInArea(): Boolean {
@@ -55,13 +55,8 @@ class RectArea(
 
 }
 
-private fun LineSeg.intersectWith(boundaryLines: List<Line>) = boundaryLines
-    .map { it.intersect(line) }
-    .filter { it.x.isFinite() && it.y.isFinite() }
-    .any {
-        min(start.x, end.x) <= it.x && it.x <= max(start.x, end.x) &&
-                min(start.y, end.y) <= it.y && it.y <= max(start.y, end.y)
-    }
+private fun LineSeg.intersectWith(boundaryLines: List<LineSeg>) =
+    boundaryLines.any { it intersectWith this }
 
 /**
  * @param points should be in counter-clock-wise order
@@ -98,7 +93,7 @@ class PolyArea(
     }
 
     private val boundaryLines = points.mapIndexed { index, point ->
-        Line(point, (points[index.next] - point).angle)
+        LineSeg(point, points[index.next])
     }
     override fun LineSeg.isIntersect() = intersectWith(boundaryLines)
 }

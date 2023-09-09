@@ -5,7 +5,7 @@ import utils.degree
 import utils.toDegree
 
 fun main() {
-    val angle = (-90).degree
+    val angle = (2.5).degree
     print("angle: ${angle.toDegree()}")
     val lines = searchArea.getLines(
         detectAngle = detectAngle,

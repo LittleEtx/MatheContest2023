@@ -35,8 +35,8 @@ data class Line(
     )
 
     fun intersect(other: Line): Vector2 {
-        val x = (c * other.b - b * other.c) / (a * other.b - b * other.a)
-        val y = (a * other.c - c * other.a) / (a * other.b - b * other.a)
+        val x = (b * other.c - c * other.b) / (a * other.b - b * other.a)
+        val y = (c * other.a - a * other.c) / (a * other.b - b * other.a)
         return Vector2(x, y)
     }
     fun shift(displacement: Vector2): Line {

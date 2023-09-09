@@ -28,6 +28,11 @@ class LineTest {
         assertEquals(0.0, intersection.x)
         assertEquals(0.0, intersection.y)
 
+        line2.shift(Vector2(1.0, -1.0)).intersect(line1).apply {
+            assertEquals(1.0, x)
+            assertEquals(-1.0, y)
+        }
+
         val line3 = Line(1.0, 1.0, 2.0)
         assert(line1.intersect(line3).let {
             it.x.isInfinite() && it.y.isInfinite()

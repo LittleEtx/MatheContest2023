@@ -18,7 +18,7 @@ data class LineSeg(
 infix fun LineSeg.intersectWith(seg: LineSeg): Boolean {
         val pt = line.intersect(seg.line)
         return pt.x.isFinite() && pt.y.isFinite() &&
-                min(seg.start.x, seg.end.y) <= pt.x && pt.x <= max(seg.start.x, seg.end.x) &&
+                min(seg.start.x, seg.end.x) <= pt.x && pt.x <= max(seg.start.x, seg.end.x) &&
                 min(seg.start.y, seg.end.y) <= pt.y && pt.y <= max(seg.start.y, seg.end.y) &&
                 min(start.x, end.x) <= pt.x && pt.x <= max(start.x, end.x) &&
                 min(start.y, end.y) <= pt.y && pt.y <= max(start.y, end.y)

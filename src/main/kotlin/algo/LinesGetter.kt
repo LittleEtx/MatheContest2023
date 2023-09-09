@@ -78,18 +78,16 @@ fun SearchArea.getLines(
         val Double.topDetectPt get() = getDetectedPoint(pos, shiftDir, detectAngle)
         val Double.botDetectPt get() = getDetectedPoint(pos, shiftDir.reverse(), detectAngle)
 
-        fun Double.touchArea(): Boolean {
-            val top = topDetectPt
-            val bot = botDetectPt
-            return top.isInArea() || bot.isInArea() || LineSeg(top, bot).isIntersect()
-        }
+        fun touchArea(p1: Vector2, p2: Vector2) = p1.isInArea() || p2.isInArea() || LineSeg(p1, p2).isIntersect()
+        fun Double.touchArea() = touchArea(topDetectPt, botDetectPt)
+
         fun Double.notTouchArea() = !touchArea()
 
     }.apply {
         val lines = mutableListOf<LineSeg>()
         // given init value to ensure touch area
         var l = -1000.0
-        var r = 0.0
+        var r = 1000.0
         while (true) {
             // extend / shirk search area
             while (l.notTouchArea()) l += DISTANCE_STEP

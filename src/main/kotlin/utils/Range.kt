@@ -6,3 +6,5 @@ fun ClosedRange<Double>.intersect(other: ClosedRange<Double>): ClosedRange<Doubl
     val end = minOf(this.end, other.end)
     return start..end
 }
+infix fun ClosedRange<Double>.step(step: Double): Sequence<Double> =
+    generateSequence(start) { it + step }.takeWhile { it <= endInclusive }

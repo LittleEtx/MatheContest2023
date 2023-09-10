@@ -90,7 +90,10 @@ fun SearchArea.getLines(
         var r = 1000.0
         while (true) {
             // extend / shirk search area
-            while (l.notTouchArea()) l += DISTANCE_STEP
+            while (l.notTouchArea()) {
+                l += DISTANCE_STEP
+                if (l > r) return lines // already finish searching
+            }
             while (l.touchArea()) l -= DISTANCE_STEP
 
             while (r.notTouchArea()) r -= DISTANCE_STEP

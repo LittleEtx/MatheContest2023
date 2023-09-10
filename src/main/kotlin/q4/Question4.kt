@@ -3,15 +3,15 @@ package q4
 import algo.getLines
 import utils.*
 
-val ANGLE_STEP = 2.5.degree
+val ANGLE_STEP = 1.degree
 val FROM_ANGLE = 0.degree
-val TO_ANGLE = 360.degree
+val TO_ANGLE = 180.degree
 val limit = 0.0..0.2
 
 val polynomial = listOf(
-    Vector2(X_START_NM, Y_START_NM.nm),
-    Vector2((X_START_NM + 2.25).nm, Y_START_NM.nm),
-    Vector2((X_START_NM + X_LENGTH_IN_NM).nm, (Y_LENGTH_IN_NM + Y_START_NM).nm),
+    Vector2((X_START_NM + 2.4).nm, (Y_START_NM + 0).nm),
+    Vector2((X_START_NM + 4).nm, (Y_START_NM + 0).nm),
+    Vector2((X_START_NM + 4).nm, (Y_START_NM + 4).nm),
 )
 
 fun main() {
@@ -32,7 +32,7 @@ fun main() {
     }
 
     (FROM_ANGLE..TO_ANGLE step ANGLE_STEP).forEach { search(it) }
-//    (q3.FROM_ANGLE..q3.TO_ANGLE step q3.ANGLE_STEP).forEach { search(it + 180.degree) }
+    (FROM_ANGLE..TO_ANGLE step ANGLE_STEP).forEach { search(it + 180.degree) }
     println()
     if (results.isEmpty()) {
         println("No result!")
